@@ -1,0 +1,86 @@
+body {
+    background: #f0f0f0;
+    color: #666;
+    font-family: Helvetica, sans-serif;
+    font-size: 10pt;
+    height: 275px;
+    margin: 5px;
+    padding: 0px;
+    width: 265px;
+}
+
+.target {
+    height: 25px;
+}
+
+.target #target {
+    outline: none;
+    width: 167px;
+}
+
+#patterns {
+    height: 195px;
+    position: relative;
+}
+
+.pattern {
+    background-color: #fff;
+    background-position: center center;
+    box-shadow:  inset 0px 0px 2px 1px rgba(0,0,0,.2);
+    display: inline-block;
+    height: 60px;
+    margin: 5px;
+    overflow: hidden;
+    position: absolute;
+    -webkit-transition: top 250ms ease-in-out 250ms, 
+                        left 250ms ease-in-out 250ms, 
+                        width 250ms ease-in-out 250ms, 
+                        height 250ms ease-in-out 250ms,
+                        z-index 0ms linear 750ms;
+    width: 60px;
+    z-index: 0;
+}
+
+.pattern.selected {
+    box-shadow: 0px 0px 2px 1px rgba(0,0,255,1);
+}
+
+#details {
+    position: relative;
+    height: 20px;
+    margin: 5px 0px;
+}
+
+#details button,
+#details div {
+    outline: none;
+    position: absolute;
+}
+
+#details #prev {
+    left: 0;
+}
+
+#details #next {
+    right: 0;
+}
+
+#details #name {
+    left: 30px;
+    line-height: 20px;
+    right: 30px;
+    text-align: center;
+}
+
+.credit {
+    border-top: 1px #ccc solid;
+    padding-top: 5px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+}
+
+.credit a {
+    color: #444;
+    text-decoration: none;
+}
