@@ -1,23 +1,26 @@
 <!doctype html>
 <html>
-    <head>
-        <link rel="stylesheet" href="popup.css">
-    </head>
-    <body>
-        <div class="target">
-            <label for="target">CSS Selector:</label> 
-            <input type="text" id="target" placeholder="body">
-        </div>
-        <div id="patterns">
-        </div>
-        <div id="details">
-            <button id="prev" disabled="disabled">Prev</button>
-            <div id="name"></div>
-            <button id="next">Next</button>
-        </div>
-        <div class="credit">
-            Patterns provided by <a href="http://subtlepatterns.com" target="_blank">Subtle Patterns</a>.
-        </div>
-        <script type="text/javascript" src="popup.js"></script>
-    </body>
+  <head>
+    <script type="text/javascript" src="packages/jquery.js"></script>
+    <script type="text/javascript" src="popup.js"></script>
+    <script type='text/javascript' src='https://api.github.com/repos/subtlepatterns/SubtlePatterns/contents/?callback=loadPatterns'></script>
+    
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <div class="target">
+      <label for="target">CSS Selector:</label> 
+      <input type="text" id="target" placeholder="body">
+    </div>
+    <div id="patterns"></div>
+    <div id="details">
+      <button id="prev" disabled="disabled">Prev</button>
+      <div id="name"></div>
+      <button id="next">Next</button>
+    </div>
+    <div class="credit">
+      Patterns provided by <a href="http://subtlepatterns.com" target="_blank">Subtle Patterns</a>.
+    </div>
+    
+  </body>
 </html>
