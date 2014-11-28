@@ -1,129 +1,122 @@
 var api = 'https://api.github.com/repos/subtlepatterns/SubtlePatterns/contents/?callback=loadPatterns';
-var patterns;
+var patterns = [];
+var page = 1;
 
 loadPatterns = function (response) {
-  console.log(response);
-  patterns = response.data;
+  for (var i in response.data) {
+    var file = response.data[i];
+    if (/\.png$/.test(file.name)) {
+      patterns.push(file);
+    }
+  }
 }
 
-// git_url: "https://api.github.com/repos/subtlepatterns/SubtlePatterns/git/blobs/9bea4330f055c418ce73df7a354fd5c29ead0631"
-// html_url: "https://github.com/subtlepatterns/SubtlePatterns/blob/gh-pages/.gitignore"name: ".gitignore"
-// path: ".gitignore"sha: "9bea4330f055c418ce73df7a354fd5c29ead0631"
-// size: 11type: "file"
-// url: "https://api.github.com/repos/subtlepatterns/SubtlePatterns/contents/.gitignore?ref=gh-pages"
+createPatterns = function () {
+  for (var i = 0; i < 12; i++) {
+    $div = $('<div></div>');
+    $div.addClass('pattern');
+    $('#patterns').append($div);
+  }
+}
 
-
-$(function () {
-  for (var i=0; i < 1; i++) {
-    console.log('kk');
-    $div = $('#patterns').append('<div></div>');
-    $div.append('<img src=' + patterns[i].name + '/>');
+showPatterns = function (page) {
+  var total = Math.ceil(patterns.length / 12);
+  $('#page').html(page + '/' + total);
+  var list = patterns.slice(page * 12 - 12, page * 12);
+  $patterns = $('.pattern');
+  for (var i in list) {
+    var file = list[i];
+    console.log(file);
+    var url = 'https://raw.github.com/subtlepatterns/SubtlePatterns/master/' + file.name;
     
+    $($patterns[i]).css({
+      'background-image': 'url(' + url + ')'
+    }).data('url', url).data('name', file.name);
+  }
+}
+
+process = function () {
+  $('#image').html('<img src=' + $('.selected').data('url') + ' />');
+  var color = $('#color').val();
+  var opacity = $('#opacity').val() / 100;
+  var blend = $('#blend').val();
+  var pattern = $('#image img')[0];
+  var canvas = $('#canvas')[0];
+
+	var context = canvas.getContext('2d');
+	context.beginPath();
+  context.rect(0, 0, 1500, 1500);
+  context.fillStyle = color;
+  context.fill();
+  
+  if (blend === 'normal' && opacity === 1) {
+    opacity = 0;
   }
   
-  // var xhr = new XMLHttpRequest();
-  // xhr.open("GET", api, true);
-  // xhr.onreadystatechange = function() {
-  //   console.log(xhr)
-  //   if (xhr.readyState == 4) {
-  //     patterns = JSON.parse(xhr.responseText);
-  //     $('body').html(xhr.responseText);
-  //   }
-  // }
-  // xhr.send();
+  Pixastic.process(pattern, "blend", { amount: opacity, mode: blend, image: canvas }, function () {
+    var canvas = $('#image canvas')[0];
+    $('#download').attr('href', canvas.toDataURL('image/png').replace('data:image/png', 'data:application/octet-stream'));
+    $('#download').attr('download', $('.selected').data('name'));
+    $('#download').prop('disabled', false);
+    chrome.extension.sendMessage({
+      pattern: canvas.toDataURL('image/png'),
+      selector: $('#target').val()
+    });
+  });
+}
+
+$(document).on('click', '.pattern', function () {
+  $('.pattern').removeClass('selected');
+  $(this).addClass('selected');
+  process();
 });
 
+$(document).on('click', '#next', function () {
+  var total = Math.ceil(patterns.length / 12);
+  if (page < total) {
+    $('.pattern').removeClass('selected');
+    $('#prev').prop('disabled', false);
+    page++;
+    showPatterns(page);
+    if (page === total) {
+      $('#next').prop('disabled', true);
+    }
+  }
+});
 
-// var raw_url = 'https://raw.github.com/subtlepatterns/SubtlePatterns/master/',
-//     patterns_div = document.getElementById('patterns'),
-//     name_div     = document.getElementById('name'),
-//     next_btn     = document.getElementById('next'),
-//     prev_btn     = document.getElementById('prev'),
-//     target_div   = document.getElementById('target'),
-//     patterns,
-//     page,
-//     selected,
-//     selectedName,
-//     pageMax;
-//
-// function loadPatterns() {
-//
-//     var pattern,
-//         file,
-//         start = page * 12,
-//         end   = start + 12;
-//
-//     if (page===0) {
-//         prev_btn.setAttribute('disabled', 'disabled');
-//     }
-//     else {
-//         prev_btn.removeAttribute('disabled');
-//     }
-//     if (page==pageMax) {
-//         next_btn.setAttribute('disabled', 'disabled');
-//     }
-//     else {
-//         next_btn.removeAttribute('disabled');
-//     }
-//
-//     while (patterns_div.hasChildNodes()) {
-//         patterns_div.removeChild(patterns_div.firstChild);
-//     }
-//
-//     for (var i = start, x; i < end; i++) {
-//         file = patterns[i];
-//         x = i%12;
-//         pattern = document.createElement('div');
-//         pattern.className = 'pattern';
-//         if (selectedName===file.name) {
-//             pattern.className += ' selected';
-//             selected = pattern;
-//         }
-//         pattern.style.backgroundImage = 'url(' + raw_url + file.name + ')';
-//         pattern.style.top = ((x - x%4) / 4) * 65 + 'px';
-//         pattern.style.left = (x%4) * 65 + 'px';
-//         pattern.setAttribute('data-name', file.name);
-//         pattern.onmouseover = function() {
-//             name_div.innerText = this.getAttribute('data-name');
-//         };
-//         pattern.onmouseout = function() {
-//             name_div.innerText = (selected)?selected.getAttribute('data-name'):'';
-//         };
-//         pattern.onclick = function() {
-//             if (selected) {
-//                 selected.className = 'pattern';
-//             }
-//             this.className = 'pattern selected';
-//             selected = this;
-//             selectedName = this.getAttribute('data-name');
-//             chrome.extension.sendMessage({
-//                 pattern: selectedName,
-//                 selector: target_div.value,
-//             });
-//         };
-//         patterns_div.appendChild(pattern);
-//     }
-// }
-//
-// prev_btn.onclick = function() {
-//     page--;
-//     loadPatterns();
-//     chrome.extension.sendMessage({page: page});
-// };
-// next_btn.onclick = function() {
-//     page++;
-//     loadPatterns();
-//     chrome.extension.sendMessage({page: page});
-// };
-//
-// chrome.extension.sendMessage('getPatterns', function(p) {
-//     patterns     = p.patterns;
-//     selectedName = p.selected;
-//     page         = p.page;
-//     pageMax      = Math.floor(patterns.length / 12);
-//     if (p.selector) {
-//         target_div.value = p.selector;
-//     }
-//
-//     loadPatterns();
-// });
+$(document).on('click', '#prev', function () {
+  if (page > 1) {
+    $('.pattern').removeClass('selected');
+    $('#next').prop('disabled', false);
+    page--;
+    showPatterns(page);
+    if (page === 1) {
+      $('#prev').prop('disabled', true);
+    }
+  }
+});
+
+$(function () {
+  $('#color').minicolors();
+  createPatterns();
+  showPatterns(page);
+  
+  $('#color').change(function () {
+    process();
+  });
+
+  $('#blend').change(function () {
+    process();
+  });
+  
+  $('#opacity-range').change(function () {
+    $('#opacity').val($(this).val());
+    process();
+  });
+  
+  $('#opacity').change(function () {
+    $('#opacity-range').val($(this).val());
+    process();
+  });
+  
+});

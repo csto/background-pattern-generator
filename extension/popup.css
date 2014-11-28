@@ -7,6 +7,7 @@ body {
     margin: 5px;
     padding: 0px;
     width: 265px;
+    overflow:hidden;
 }
 
 .target {
@@ -19,26 +20,18 @@ body {
 }
 
 #patterns {
-    height: 195px;
-    position: relative;
+    height: 215px;
+    margin:-5px;
 }
 
 .pattern {
     background-color: #fff;
     background-position: center center;
     box-shadow:  inset 0px 0px 2px 1px rgba(0,0,0,.2);
-    display: inline-block;
+    float:left;
     height: 60px;
+    width: 58px;
     margin: 5px;
-    overflow: hidden;
-    position: absolute;
-    -webkit-transition: top 250ms ease-in-out 250ms, 
-                        left 250ms ease-in-out 250ms, 
-                        width 250ms ease-in-out 250ms, 
-                        height 250ms ease-in-out 250ms,
-                        z-index 0ms linear 750ms;
-    width: 60px;
-    z-index: 0;
 }
 
 .pattern.selected {
@@ -65,7 +58,7 @@ body {
     right: 0;
 }
 
-#details #name {
+#details #page {
     left: 30px;
     line-height: 20px;
     right: 30px;
@@ -78,9 +71,15 @@ body {
     height: 20px;
     line-height: 20px;
     text-align: center;
+    clear:both;
 }
 
 .credit a {
     color: #444;
     text-decoration: none;
+}
+
+#canvas, #image {
+  position:absolute;
+  left:1000px;
 }

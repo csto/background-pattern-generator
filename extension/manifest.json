@@ -1,8 +1,8 @@
 {
-    "name": "Subtle Patterns Preview",
-    "version": "0.0.5",
+    "name": "Background Pattern Generator",
+    "version": "1.0.0",
     "manifest_version": 2,
-    "description": "Preview tool for Subtle Patterns.",
+    "description": "Create subtle background patterns and view it on the page.",
     "icons": {
         "48": "icon-48.png",
         "128": "icon-128.png"
@@ -12,10 +12,10 @@
     },
     "browser_action": {
         "default_icon": "icon-32.png",
-        "default_title": "Subtle Patterns Preview",
+        "default_title": "Background Pattern Generator",
         "default_popup": "popup.html"
     },
-    "homepage_url": "https://github.com/overra/Subtle-Patterns-Chrome-Extension",
+    "homepage_url": "https://github.com/csto/background-pattern-generator",
     "content_security_policy": "script-src 'self' https://api.github.com; object-src 'self'",
     "permissions": [
         "tabs",

@@ -2,9 +2,12 @@
 <html>
   <head>
     <script type="text/javascript" src="packages/jquery.js"></script>
+    <script type="text/javascript" src="packages/jquery.minicolors.js"></script>
+    <script type="text/javascript" src="packages/pixastic.js"></script>
     <script type="text/javascript" src="popup.js"></script>
     <script type='text/javascript' src='https://api.github.com/repos/subtlepatterns/SubtlePatterns/contents/?callback=loadPatterns'></script>
     
+    <link rel="stylesheet" href="packages/jquery.minicolors.css">
     <link rel="stylesheet" href="popup.css">
   </head>
   <body>
@@ -13,9 +16,39 @@
       <input type="text" id="target" placeholder="body">
     </div>
     <div id="patterns"></div>
+    <div id='colorize'>
+      <input type='text' id='color' value='#000000' />
+      <select id="blend" name="blend">
+        <option value="normal">normal</option>
+        <option value="multiply">multiply</option>
+        <option value="lighten">lighten</option>
+        <option value="darken">darken</option>
+        <option value="lightercolor">lightercolor</option>
+        <option value="darkercolor">darkercolor</option>
+        <option value="difference">difference</option>
+        <option value="screen">screen</option>
+        <option value="exclusion">exclusion</option>
+        <option value="overlay">overlay</option>
+        <option value="softlight">softlight</option>
+        <option value="hardlight">hardlight</option>
+        <option value="colordodge">colordodge</option>
+        <option value="colorburn">colorburn</option>
+        <option value="lineardodge">lineardodge</option>
+        <option value="linearburn">linearburn</option>
+        <option value="linearlight">linearlight</option>
+        <option value="vividlight">vividlight</option>
+        <option value="pinlight">pinlight</option>
+        <option value="hardmix">hardmix</option>
+      </select>
+      <input type='range' id='opacity-range' min='0' max='100' step='1' value='100' />
+      <input type='text' id='opacity' value='100' />
+      <a download='download' id='download' disabled='true'>Download</a>
+      <div id='image'></div>
+      <canvas id='canvas' width='500' height='500'></canvas>
+    </div>
     <div id="details">
       <button id="prev" disabled="disabled">Prev</button>
-      <div id="name"></div>
+      <div id="page"></div>
       <button id="next">Next</button>
     </div>
     <div class="credit">
